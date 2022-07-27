@@ -26,10 +26,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//データベースの作成
 	sqlite3* db;
 	sqlite3_stmt* stmt;
-	sqlite3_open("test.db", &db);
+	sqlite3_open("test1.db", &db);
 
 	//テーブルの作成
-	int createResultCode = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS sample(number INT,name varchar(100));",		//ここで決める
+	int createResultCode = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS tb1(id integer primary key autoincrement, number INT,name varchar(100));",		//ここで決める
 		0, 0, &error);
 	if (createResultCode != SQLITE_OK) {
 		Novice::ScreenPrintf(0, 0, "error");
@@ -39,25 +39,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	 //INSERT文↓//
 	///////////////
 
-	////INSERT文の準備
-	//int InsertCode = sqlite3_prepare_v2(db, "INSERT INTO sample VALUES(0,'A');",//ここで何を追加するか決める
-	//								-1, &stmt, 0);
+	//INSERT文の準備
+	int InsertCode = sqlite3_prepare_v2(db, "INSERT INTO tb1(number,name) VALUES(1,'A');",//ここで何を追加するか決める
+									-1, &stmt, 0);
 
-	//if (InsertCode != SQLITE_OK) {
-	//	Novice::ScreenPrintf(0, 20, "error");
-	//	sqlite3_close(db);
-	//}
+	if (InsertCode != SQLITE_OK) {
+		Novice::ScreenPrintf(0, 20, "error");
+		sqlite3_close(db);
+	}
 
-	////INSERT文の実行
-	//int InsertResultCode = sqlite3_step(stmt);
-	//if (InsertResultCode != SQLITE_DONE) {
-	//	Novice::ScreenPrintf(0, 40, "error");
-	//}
+	//INSERT文の実行
+	int InsertResultCode = sqlite3_step(stmt);
+	if (InsertResultCode != SQLITE_DONE) {
+		Novice::ScreenPrintf(0, 40, "error");
+	}
 
-	//int Insert = sqlite3_finalize(stmt);
-	//if (Insert != SQLITE_OK) {
-	//	Novice::ScreenPrintf(0, 60, "error");
-	//}
+	int Insert = sqlite3_finalize(stmt);
+	if (Insert != SQLITE_OK) {
+		Novice::ScreenPrintf(0, 60, "error");
+	}
 
 	///////////////
 	 //INSERT文↑//
@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	///////////////
 
 	////SELECT文の準備
-	//int SelectCode = sqlite3_prepare_v2(db, "SELECT number FROM sample",	//ここでどこを読み込むのか決める
+	//int SelectCode = sqlite3_prepare_v2(db, "SELECT number FROM tb1",	//ここでどこを読み込むのか決める
 	//	-1, &stmt, 0);
 	//if (SelectCode != SQLITE_OK) {
 	//	Novice::ScreenPrintf(0, 20, "error");
@@ -104,7 +104,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	////UPDATE文の準備
-	//int UpdateCode = sqlite3_prepare_v2(db, "UPDATE sample SET name='X' where number=1",	//ここでどこを更新するか決める
+	//int UpdateCode = sqlite3_prepare_v2(db, "UPDATE tb1 SET name='Z' where number=1",	//ここでどこを更新するか決める
 	//	-1, &stmt, 0);
 	//if (UpdateCode != SQLITE_OK) {
 	//	Novice::ScreenPrintf(0, 20, "error");
@@ -134,7 +134,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	///////////////
 
 	////DELETE文の準備
-	//int DeleteCode = sqlite3_prepare_v2(db, "DELETE FROM sample where number=0",	//ここでどこを消すか決める
+	//int DeleteCode = sqlite3_prepare_v2(db, "DELETE FROM tb1 where number=1",	//ここでどこを消すか決める
 	//	-1, &stmt, 0);
 	//if (DeleteCode != SQLITE_OK) {
 	//	Novice::ScreenPrintf(0, 20, "error");
